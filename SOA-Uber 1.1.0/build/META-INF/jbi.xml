@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns0="http://enterprise.netbeans.org/bpel/SOA-Uber/SOA-Uber" xmlns:ns1="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" xmlns:ns2="http://www.sun.com/jbi/descriptor/service-unit" version="1.0">
+    <services binding-component="false">
+        <provides endpoint-name="ClientePortTypeRole_myRole" interface-name="ns1:ClientePortType" service-name="ns0:WSCliente">
+            <ns2:display-name>WSCliente</ns2:display-name>
+            <ns2:process-name>SOA-Uber</ns2:process-name>
+            <ns2:file-path>SOA-Uber.bpel</ns2:file-path>
+        </provides>
+    </services>
+</jbi>

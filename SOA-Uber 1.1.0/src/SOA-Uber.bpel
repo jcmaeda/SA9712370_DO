@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process
+    name="SOA-Uber"
+    targetNamespace="http://enterprise.netbeans.org/bpel/SOA-Uber/SOA-Uber"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/SOA-Uber/SOA-Uber"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
+    xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns0="http://tempuri.org/">
+    <import namespace="http://enterprise.netbeans.org/bpel/Service1.asmxWrapper" location="Service1.asmxWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://tempuri.org/" location="http://localhost:56333/Service1.asmx?WSDL" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" location="Cliente.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="Cliente" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" partnerLinkType="tns:Cliente" myRole="ClientePortTypeRole"/>
+        <partnerLink name="WSCliente" xmlns:tns="http://enterprise.netbeans.org/bpel/Service1.asmxWrapper" partnerLinkType="tns:Service1SoapLinkType" partnerRole="Service1SoapRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ClienteOperationOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" messageType="tns:ClienteOperationResponse"/>
+        <variable name="ClienteOperationIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" messageType="tns:ClienteOperationRequest"/>
+        <variable name="SolicitarServicioOut1" messageType="ns0:SolicitarServicioSoapOut"/>
+        <variable name="SolicitarServicioIn1" messageType="ns0:SolicitarServicioSoapIn"/>      
+    </variables>
+    <sequence name="Sequence1">
+        <receive name="Receptor" createInstance="yes" partnerLink="Cliente" operation="ClienteOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" portType="tns:ClientePortType" variable="ClienteOperationIn"/>
+        <assign name="Assign1">
+            <copy>
+                <from variable="ClienteOperationIn" part="part1"/>
+                <to>$SolicitarServicioIn1.parameters/ns0:cliente</to>
+            </copy>
+        </assign>
+        <invoke name="Llamada1" partnerLink="WSCliente" operation="SolicitarServicio" portType="ns0:Service1Soap" inputVariable="SolicitarServicioIn1" outputVariable="SolicitarServicioOut1"/>
+        <assign name="Assign2">
+            <copy>
+                <from variable="ClienteOperationOut" part="part1"/>
+                <to variable="ClienteOperationOut" part="part1"/>
+            </copy>
+        </assign>
+        <reply name="Respuesta" partnerLink="Cliente" operation="ClienteOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" portType="tns:ClientePortType" variable="ClienteOperationOut"/>
+    </sequence>
+</process>

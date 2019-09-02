@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<process
+    name="SOA-Uber"
+    targetNamespace="http://enterprise.netbeans.org/bpel/SOA-Uber/SOA-Uber"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/SOA-Uber/SOA-Uber"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
+    xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+    <import namespace="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" location="Cliente.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Piloto" location="Piloto.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Rastreo" location="Rastreo.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="WSCliente" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" partnerLinkType="tns:Cliente" myRole="ClientePortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="ClienteOperationOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" messageType="tns:ClienteOperationResponse"/>
+        <variable name="ClienteOperationIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" messageType="tns:ClienteOperationRequest"/>
+    </variables>
+    <sequence name="Sequence1">
+        <receive name="SolicitudServicio" createInstance="yes" partnerLink="WSCliente" operation="ClienteOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" portType="tns:ClientePortType" variable="ClienteOperationIn"/>
+        <assign name="Assign1">
+            <copy>
+                <from>concat($ClienteOperationIn.part1, 'Hola')</from>
+                <to variable="ClienteOperationOut" part="part1"/>
+            </copy>
+        </assign>
+        <reply name="DevuelveCodigo" partnerLink="WSCliente" operation="ClienteOperation" xmlns:tns="http://j2ee.netbeans.org/wsdl/SOA-Uber/src/Cliente" portType="tns:ClientePortType" variable="ClienteOperationOut"/>
+    </sequence>
+</process>
